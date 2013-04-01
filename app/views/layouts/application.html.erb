@@ -3,11 +3,29 @@
 <head>
   <title>Platform</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= include_gon %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div class="navbar">
+    <div class="navbar-inner">
+      <a class="brand" href="#">Title</a>
+      <ul class="nav">
+        <% if user_signed_in? %>
+          <% if session[:article_id] %>
+            <li class="active"><a><%= article_name(session[:article_id]) %></a></li>
+          <% end %>
+        <li><%= link_to 'sign out', destroy_user_session_path, :method => :delete %></li>
+        <% else %>
+          <li><%= link_to 'sign in', new_user_session_path %></li>
+        <% end %>
+      </ul>
+    </div>
+</div>
 
+<%= flash[:notice] %>
+<%= flash[:alert] %>
 <%= yield %>
 
 </body>

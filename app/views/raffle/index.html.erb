@@ -1,16 +1,39 @@
-<div class="row">
-  <div class="span8" id="core_editor" contenteditable=true ng-model="editor.name">
-    <word class="word">neal</word> <word>go</word> <word>go</word> <word>ahead</word>!
+<div ng-controller='editor'>
+  <div id='door' class="row" >
+    <div class="span8">
+      <div  id="core_editor" contenteditable=true ng-model="editor.name">
+        <%= raw @article.html %>
+      </div>
+
+      <%= form_for :article, :url => import_article_path do |f| %>
+        <div>
+        <%= f.file_field :file %>
+        <%= f.hidden_field :article_id, :value => params[:article_id] %>
+        <%= f.submit 'ok' %>
+      </div>
+    <% end %>
+
+      <%= form_for :dictionary, :url => import_dictionary_path do |f| %>
+        <div>
+        <%= f.file_field :file %>
+        <%= f.submit 'ok' %>
+      </div>
+    <% end %>
+
+      <%= form_for :fuzzy, :url => import_fuzzy_path do |f| %>
+        <div>
+        <%= f.file_field :file %>
+        <%= f.submit 'ok' %>
+      </div>
+    <% end %>
+
+
+      <div class="span4" id="shower" contenteditable=true>
+      </div>
+    </div>
+    <%= form_tag '/deal' do %>
+      <div class="span4" id="attr_pick">
   </div>
-
-  <form>
-    <input ng-model='editor.name'>
-  </form>
-
-  <div id="shower" class="span8">
+  <% end %>
   </div>
-  content: {{editor.name}}
-
 </div>
-
-<div id=attr_pick></div>

@@ -1,0 +1,7 @@
+<% @articles.each do |article| %>
+  <%= article.grade %>年级<%= article.unit %>单元<% article.lesson %>课
+  <%= link_to 'go', raffle_path(:article_id => article.id) %>
+  <br/>
+
+<% end %>
+<%= link_to '创建项目', new_article_path %>

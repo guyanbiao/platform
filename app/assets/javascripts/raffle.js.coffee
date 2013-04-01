@@ -1,12 +1,8 @@
-editor_ctrl = ($scope) ->
+@editor = ($scope) ->
   $scope.editor = 'neal'
 
-
-
 $ ->
-
   $('#core_editor').bind 'input', ->
-    alert 'sb'
     if window.getSelection().anchorNode.parentElement.nodeName != 'WORD' 
       alert window.getSelection().anchorNode.parentElement.nodeName
 
@@ -14,6 +10,18 @@ $ ->
     e.preventDefault()
     alert e.keyCode
     
+
+  $.ajax '/query/high', 
+    type: 'GET'
+    success: (data) -> 
+      window.primary_filter = data
+      $('.word').each (_index, elem) ->
+        console.log $(elem).text()
+        if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1
+          $(elem).addClass("first_appear")
+
+
+
     
 
   $('word').bind 'dblclick', ->
@@ -28,12 +36,26 @@ $ ->
       data: {'word': word}
       dataType: 'json'
       success: (data)->
-        $(data.result).each (index, elem)->
-          $('#attr_pick').append("<div><input type='radio' name='meaning' value=#{index}>#{elem}</div>")
-        $('#attr_pick').append('<a id="save_class" class="btn btn-success">保存</a>')
-        $('#save_class').bind 'click', ->
-          if (selected_value = $('input[name=meaning]:checked').val())?
-            $('.selected_word').attr('meanging', selected_value)
-          else
-            alert 'choose one'
+        $(data).each (index, elem) ->
+          $('#attr_pick').append("<div>#{elem.origin}<sup>#{index + 1}</sup></div>")
+          $(elem.word).each (s_index, s_elem) ->
+            $('#attr_pick').append("category<sup>#{s_index + 1}</sup>: </div>")
+            $(s_elem.category).each (ss_index, ss_elem ) ->
+              $('#attr_pick').append("<div><input type='radio' value=#{index}_#{s_index}_#{ss_index} name='radio_list'> #{ss_elem.description}</div>")
+        $('input[name=radio_list]').bind 'change', ->
+          $.ajax "/articles/#{gon.article_id}",
+            dataType: 'json'
+            processData: false
+            contentType: "application/json"
+            type: 'POST'
+            beforeSend: (xhr) ->
+              xhr.setRequestHeader("X-Http-Method-Override", "PUT")
+
+          value = $('input[name=radio_list]:checked').val()
+          $('.selected_word').removeClass('first_appear')
+          $('.selected_word').addClass('marked')
+          $('.selected_word').attr('meaning', value )
+
+
+        
 

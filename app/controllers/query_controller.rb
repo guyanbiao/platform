@@ -1,14 +1,14 @@
-#encoding: utf-8
 class QueryController < ApplicationController
   def index
-    case params[:word]
-    when 'neal'
-      result = {result: ['纪玉瑄', '谷燕彪']}
-    when 'go'
-      result = {result: ['走', '开始']}
-    when 'ahead'
-      result = {result: ['一个头', '向前']}
-    end
+    words = Dictionary.fuzzy_find params[:word]
+    result = words.map { |word| { :origin => (Fuzzy.any_in(:derivations => [params[:word]]).first.try(:title) || params[:word]),
+                                  :word => word.categories.map { |category| {:category => category.senses.map { |sense| { :description => sense.description, :num => sense.num}}}}}}
     render json: result
   end
+
+  def check
+    @filter = Filter.where(:level => params[:level]).first
+    render json: @filter.members
+  end
+
 end
