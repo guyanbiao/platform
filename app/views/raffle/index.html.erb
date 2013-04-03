@@ -5,35 +5,14 @@
         <%= raw @article.html %>
       </div>
 
-      <%= form_for :article, :url => import_article_path do |f| %>
-        <div>
-        <%= f.file_field :file %>
-        <%= f.hidden_field :article_id, :value => params[:article_id] %>
-        <%= f.submit 'ok' %>
-      </div>
-    <% end %>
-
-      <%= form_for :dictionary, :url => import_dictionary_path do |f| %>
-        <div>
-        <%= f.file_field :file %>
-        <%= f.submit 'ok' %>
-      </div>
-    <% end %>
-
-      <%= form_for :fuzzy, :url => import_fuzzy_path do |f| %>
-        <div>
-        <%= f.file_field :file %>
-        <%= f.submit 'ok' %>
-      </div>
-    <% end %>
 
 
       <div class="span4" id="shower" contenteditable=true>
       </div>
     </div>
-    <%= form_tag '/deal' do %>
       <div class="span4" id="attr_pick">
   </div>
-  <% end %>
+      <div class="span4" id="boxes">
+  </div>
   </div>
 </div>

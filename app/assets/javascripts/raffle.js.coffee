@@ -20,10 +20,6 @@ $ ->
         if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1
           $(elem).addClass("first_appear")
 
-
-
-    
-
   $('word').bind 'dblclick', ->
     $('.selected_word').removeClass('selected_word')
     $(this).addClass('selected_word')
@@ -41,13 +37,26 @@ $ ->
           $(elem.word).each (s_index, s_elem) ->
             $('#attr_pick').append("category<sup>#{s_index + 1}</sup>: </div>")
             $(s_elem.category).each (ss_index, ss_elem ) ->
-              $('#attr_pick').append("<div><input type='radio' value=#{index}_#{s_index}_#{ss_index} name='radio_list'> #{ss_elem.description}</div>")
+              juggle ="#{index}_#{s_index}_#{ss_index}"
+              if $('.selected_word').attr('meaning') == juggle
+                $('#attr_pick').append("<div><input type='radio' value=#{juggle} name='radio_list' checked> #{ss_elem.description}</div>")
+              else
+                $('#attr_pick').append("<div><input type='radio' value=#{juggle} name='radio_list'> #{ss_elem.description}</div>")
+
+        $('#boxes').html('')
+        if $('.selected_word').hasClass('new_comer')
+          $('#boxes').append('<div>new word <input name="stranger" type="checkbox" checked></div>')
+        else
+          $('#boxes').append('<div>new word <input name="stranger" type="checkbox"></div>')
+
+        $('input[name=stranger]').bind 'change', ->
+          $('.selected_word').toggleClass('new_comer')
+
         $('input[name=radio_list]').bind 'change', ->
           $.ajax "/articles/#{gon.article_id}",
-            dataType: 'json'
-            processData: false
-            contentType: "application/json"
             type: 'POST'
+            data: { html: $('#core_editor').html() }
+            dataType: 'json'
             beforeSend: (xhr) ->
               xhr.setRequestHeader("X-Http-Method-Override", "PUT")
 

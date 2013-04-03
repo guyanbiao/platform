@@ -1,4 +1,7 @@
 class ImportController < ApplicationController
+  def index
+    
+  end
   def article
     doc = params[:article][:file].read
     @article = Article.find params[:article][:article_id]

@@ -17,5 +17,6 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
+    render json: @article
   end
 end

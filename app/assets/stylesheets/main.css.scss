@@ -37,3 +37,13 @@ input[type=radio] {
   background-color: #468847;
   @include main_marker;
 }
+
+#attr_pick {
+  height: 300px;
+  overflow: scroll;
+}
+
+.new_comer {
+  font-size: 18px;
+  font-weight: normal;
+}

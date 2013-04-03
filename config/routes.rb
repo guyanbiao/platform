@@ -7,6 +7,7 @@ Platform::Application.routes.draw do
   get 'query' => 'query#index'
   get 'query/:level' => 'query#check'
   get 'raffle' => 'raffle#index', :as => 'raffle'
+  get 'import' => 'import#index'
   namespace :import do
     post 'article' 
     post 'dictionary' 
