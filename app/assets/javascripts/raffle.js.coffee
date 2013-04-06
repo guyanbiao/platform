@@ -5,10 +5,26 @@ $ ->
 
   $('#core_editor').bind 'input', ->
 
+  $('#core_editor').keyup (e) ->
+    sel = window.getSelection()
+    node = sel.anchorNode
+    if node.nodeType == 3 and node.parentNode.nodeName != 'WORD' and node.textContent.match(/\w+/)
+      findAndReplaceDOMText(/\w+/, node, 'word')
+
   $('#core_editor').keypress (e) ->
     sel = window.getSelection()
-    if 
 
+    if e.keyCode == 32
+      node = sel.anchorNode.parentNode
+      range = sel.getRangeAt(0)
+      e.preventDefault()
+      new_node = document.createTextNode('\u00A0')
+      if node.nodeName == "WORD"
+        $(new_node).insertAfter(node)
+        sel.collapse(new_node, 2)
+      else if 3 > 2
+        sel.anchorNode.appendChild(new_node)
+        sel.collapse(new_node, 2)
     
 
   $.ajax '/query/high', 
@@ -20,7 +36,7 @@ $ ->
         if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1
           $(elem).addClass("first_appear")
 
-  $('word').bind 'dblclick', ->
+  $('#core_editor').delegate 'word', 'click', ->
     $('.selected_word').removeClass('selected_word')
     $(this).addClass('selected_word')
     $('.slected_word').removeClass('selected_word')
