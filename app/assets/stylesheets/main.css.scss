@@ -1,4 +1,9 @@
+body {
+  padding: 5px;
+}
 #core_editor {
+  padding: 5px;
+  width: 500px;
   height: 300px;
   border-style: dotted;
   overflow: scroll;
@@ -8,6 +13,7 @@
   height: 300px;
   border-style: solid;
 }
+
 input[type=radio] {
   display: inline;
 }
@@ -46,4 +52,12 @@ input[type=radio] {
 .new_comer {
   font-size: 18px;
   font-weight: normal;
+}
+
+.mark-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 25px;
+  padding: 3px;
+
 }

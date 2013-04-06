@@ -1,18 +1,16 @@
 <div ng-controller='editor'>
   <div id='door' class="row" >
     <div class="span8">
-      <div  id="core_editor" contenteditable=true ng-model="editor.name">
-        <%= raw @article.html %>
+      <div  id="core_editor" ng-model="editor.name" contenteditable=true >
+        <%#= raw @article.html %>
       </div>
-
-
-
       <div class="span4" id="shower" contenteditable=true>
       </div>
     </div>
-      <div class="span4" id="attr_pick">
-  </div>
-      <div class="span4" id="boxes">
-  </div>
+
+    <div class="span4" id="attr_pick">
+    </div>
+    <div class="span2" id="boxes">
+    </div>
   </div>
 </div>

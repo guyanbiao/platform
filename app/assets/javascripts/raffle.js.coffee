@@ -2,13 +2,13 @@
   $scope.editor = 'neal'
 
 $ ->
+
   $('#core_editor').bind 'input', ->
-    if window.getSelection().anchorNode.parentElement.nodeName != 'WORD' 
-      alert window.getSelection().anchorNode.parentElement.nodeName
 
   $('#core_editor').keypress (e) ->
-    e.preventDefault()
-    alert e.keyCode
+    sel = window.getSelection()
+    if 
+
     
 
   $.ajax '/query/high', 
