@@ -17,6 +17,8 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
+    @article.html = params[:html_content]
+    @article.save
     render json: @article
   end
 end
