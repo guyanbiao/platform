@@ -8,7 +8,7 @@ class QueryController < ApplicationController
 
   def check
     @filter = Filter.where(:level => params[:level]).first
-    render json: @filter.members
+    render json: @filter.try(:members)
   end
 
 end
