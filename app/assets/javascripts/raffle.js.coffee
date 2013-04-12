@@ -56,9 +56,9 @@ $ ->
         $(data).each (index, elem) ->
           $('#attr_pick').append("<div>#{elem.origin}<sup>#{index + 1}</sup></div>")
           $(elem.word).each (s_index, s_elem) ->
-            $('#attr_pick').append("category<sup>#{s_index + 1}</sup>: </div>")
-            $(s_elem.category).each (ss_index, ss_elem ) ->
-              juggle ="#{index}_#{s_index}_#{ss_index}"
+            $('#attr_pick').append("[#{s_elem.cat}]</div>")
+            $(s_elem.sense).each (ss_index, ss_elem ) ->
+              juggle = ss_elem.id
               if $('.selected_word').attr('meaning') == juggle
                 $('#attr_pick').append("<div><input type='radio' value=#{juggle} name='radio_list' checked> #{ss_elem.description}</div>")
               else

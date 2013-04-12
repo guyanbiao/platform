@@ -17,7 +17,7 @@ class ImportController < ApplicationController
       d = Dictionary.create(:word => word.text)
       word.parent.parent.xpath('body/category').each do |category|
         c = d.categories.create
-        c.cats.create(:speech => c.xpath('cat').text)
+        c.create_cat(:speech => category.xpath('cat').text)
         category.xpath('sense').each do |sense|
           s = c.senses.create(:description => sense.xpath('description').text)
         end
