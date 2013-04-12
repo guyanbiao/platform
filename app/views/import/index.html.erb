@@ -1,0 +1,4 @@
+<%= form_for :dictionary, :url => import_dictionary_path do |f| %>
+  <%= f.file_field :file %>
+  <%= f.submit 'upload' %>
+<% end %>
