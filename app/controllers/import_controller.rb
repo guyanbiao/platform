@@ -1,7 +1,7 @@
 class ImportController < ApplicationController
   def index
-    
   end
+
   def article
     doc = params[:article][:file].read
     @article = Article.find params[:article][:article_id]
@@ -13,12 +13,13 @@ class ImportController < ApplicationController
 
   def dictionary
     doc = Nokogiri::XML((params[:dictionary][:file]).read)
-    doc.xpath('//word').each do |word|
+    doc.xpath('main/subdict/entry/head/word').each do |word|
       d = Dictionary.create(:word => word.text)
       word.parent.parent.xpath('body/category').each do |category|
         c = d.categories.create
+        c.cats.create(:speech => c.xpath('cat').text)
         category.xpath('sense').each do |sense|
-          s = c.senses.create(:num => sense.attribute('id').value, :description => sense.xpath('description').text)
+          s = c.senses.create(:description => sense.xpath('description').text)
         end
       end
     end

@@ -1,5 +1,5 @@
 class Category
   include Mongoid::Document
-  embedded_in :dictionary
-  embeds_many :senses
+  belongs_to :dictionary
+  has_many :senses
 end

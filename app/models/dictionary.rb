@@ -2,7 +2,7 @@ class Dictionary
   include Mongoid::Document
   field :word , :type => String
   #field :phonetic, :type => String
-  embeds_many :categories
+  has_many :categories
   scope :fuzzy_find, ->(word) {
     if Dictionary.where(:word => word).first
       where(:word => word)

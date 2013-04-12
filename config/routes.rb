@@ -1,4 +1,4 @@
-Platform::Application.routes.draw do
+  Platform::Application.routes.draw do
 
   devise_for :users
 

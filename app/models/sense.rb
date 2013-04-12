@@ -1,6 +1,5 @@
 class Sense
   include Mongoid::Document
-  embedded_in :category
-  field :num,         :type => Integer
+  belongs_to :category
   field :description, :type => String
 end
