@@ -25,8 +25,7 @@ input[type=radio] {
 
 @mixin main_marker {
   display: inline-block;
-  padding: 2px 4px;
-  font-size: 11.844px;
+  padding: 1px 4px;
   font-weight: bold;
   line-height: 14px;
   color: white;

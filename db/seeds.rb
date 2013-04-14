@@ -1,7 +1,5 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+%w[high middle primary].each do |level|
+  doc = File.read(Rails.root + 'doc' + "#{level}.txt")
+  arr = doc.split(/\r\n/)
+  Filter.create(:level => level, :members => arr)
+end

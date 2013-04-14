@@ -27,6 +27,8 @@ $ ->
       range = sel.getRangeAt(0)
       new_node = document.createTextNode('\u00A0')
       if node.nodeName == "WORD"
+        if $.inArray(sel.anchorNode.textContent, window.new_word_finder) == -1
+          $(node).addClass('first_appear')
         e.preventDefault()
         $(new_node).insertAfter(node)
         sel.collapse(new_node, 1)
@@ -35,8 +37,8 @@ $ ->
   $.ajax '/query/high',
     type: 'GET'
     success: (data) ->
-      window.primary_filter = data
-      $('.word').each (_index, elem) ->
+      window.new_word_finder = data
+      $('word').each (_index, elem) ->
         console.log $(elem).text()
         if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1
           $(elem).addClass("first_appear")
