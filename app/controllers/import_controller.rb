@@ -30,7 +30,13 @@ class ImportController < ApplicationController
     doc = Nokogiri::XML((params[:fuzzy][:file]).read)
     doc.xpath('lemmaList/entry').each do |entry|
       if entry.xpath('body/derivations').text.length > 0
-        Fuzzy.create(:title => entry.xpath('head/title').text, :derivations => better(entry.xpath('body/derivations').text))
+        if !Fuzzy.where(:title => entry.xpath('head/title').text).first
+          Fuzzy.create(:title => entry.xpath('head/title').text, :derivations => better(entry.xpath('body/derivations').text))
+        else
+          fuzzy = Fuzzy.where(:title => entry.xpath('head/title').text).first
+          fuzzy.derivations = (fuzzy.derivations.concat(better(entry.xpath('body/derivations').text))).uniq
+          fuzzy.save
+        end
       end
     end
   end

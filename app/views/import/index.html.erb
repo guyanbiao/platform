@@ -1,4 +1,11 @@
+字典的导入：
 <%= form_for :dictionary, :url => import_dictionary_path do |f| %>
+  <%= f.file_field :file %>
+  <%= f.submit 'upload' %>
+<% end %>
+
+词语的其他形式导入：
+<%= form_for :fuzzy, :url => import_fuzzy_path do |f| %>
   <%= f.file_field :file %>
   <%= f.submit 'upload' %>
 <% end %>

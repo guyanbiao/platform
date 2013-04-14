@@ -3,12 +3,13 @@
 
 $ ->
 
-# $('#core_editor').bind 'input', ->
-#   $.ajax "/articles/#{gon.article_id}",
-#     data: {html_content: $('#core_editor').html()}
-#     type: 'POST'
-#     beforeSend: (xhr) ->
-#       xhr.setRequestHeader("X-Http-Method-Override", "PUT")
+  $('#core_editor').bind 'input', ->
+    marked_word = $('[meaning]').map((_x, y)-> $(y).attr('meaning'))
+    $.ajax "/articles/#{gon.article_id}",
+      data: {sense: marked_word.get(), html: $('#core_editor').html() }
+      type: 'POST'
+      beforeSend: (xhr) ->
+        xhr.setRequestHeader("X-Http-Method-Override", "PUT")
 
   $('#core_editor').keyup (e) ->
     sel = window.getSelection()
@@ -18,18 +19,17 @@ $ ->
 
   $('#core_editor').keypress (e) ->
     sel = window.getSelection()
+    sel.modify('move', 'forward', 'character')
+    this.focus
 
     if e.keyCode == 32
       node = sel.anchorNode.parentNode
       range = sel.getRangeAt(0)
-      e.preventDefault()
       new_node = document.createTextNode('\u00A0')
       if node.nodeName == "WORD"
+        e.preventDefault()
         $(new_node).insertAfter(node)
-        sel.collapse(new_node, 2)
-      else if 3 > 2
-        sel.anchorNode.appendChild(new_node)
-        sel.collapse(new_node, 2)
+        sel.collapse(new_node, 1)
     
 
   $.ajax '/query/high',

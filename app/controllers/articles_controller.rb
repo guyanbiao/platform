@@ -17,8 +17,15 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
-    @article.html = params[:html_content]
+    @article.html = params[:html]
     @article.save
+
+    if params[:sense] and params[:sense].length > 0
+      @senses = Sense.find params[:sense]
+      @senses.each do |sense|
+        sense.articles << @article
+      end
+    end
     render json: @article
   end
 end

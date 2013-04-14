@@ -1,5 +1,6 @@
 class Article
   include Mongoid::Document
+  has_and_belongs_to_many :senses
   field :grade,   :type => Integer
   field :unit,   :type => Integer
   field :lesson,   :type => Integer
