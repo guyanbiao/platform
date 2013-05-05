@@ -1,8 +1,17 @@
+mydir = angular.module("myApp", [])
+mydir.directive("core", ->
+  return {
+    restrict: "A",
+    link : (scope) ->
+      scope.content = "Hello World"
+  }
+)
+
 @editor = ($scope) ->
   $scope.editor = 'neal'
 
 $ ->
-
+  #save the text to server everytime user enter someting.
   $('#core_editor').bind 'input', ->
     marked_word = $('[meaning]').map((_x, y)-> $(y).attr('meaning'))
     $.ajax "/articles/#{gon.article_id}",

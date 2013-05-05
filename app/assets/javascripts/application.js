@@ -15,3 +15,6 @@
 //= require jquery_ujs
 //= require raffle
 //= require findAndReplaceDOMText
+
+
+

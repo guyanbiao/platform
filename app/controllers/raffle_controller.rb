@@ -1,4 +1,5 @@
 class RaffleController < ApplicationController
+  layout "editor"
   def index
     if params[:article_id]
       @article = Article.find params[:article_id]
