@@ -2,8 +2,21 @@ mydir = angular.module("myApp", [])
 mydir.directive("core", ->
   return {
     restrict: "A",
-    link : (scope) ->
+    require: 'ngModel'
+    link : (scope, element, attrs, ctrl) ->
       scope.content = "Hello World"
+      element.bind 'input', ->
+        scope.$apply ->
+          ctrl.$setViewValue element.html()
+
+      ctrl.$render = (value) -> element.html(value)
+  }
+)
+mydir.directive("follower", ->
+  return {
+    restrict: "A",
+    link : (scope, element, attrs) ->
+      scope.content = "World"
   }
 )
 
@@ -12,13 +25,13 @@ mydir.directive("core", ->
 
 $ ->
   #save the text to server everytime user enter someting.
-  $('#core_editor').bind 'input', ->
-    marked_word = $('[meaning]').map((_x, y)-> $(y).attr('meaning'))
-    $.ajax "/articles/#{gon.article_id}",
-      data: {sense: marked_word.get(), html: $('#core_editor').html() }
-      type: 'POST'
-      beforeSend: (xhr) ->
-        xhr.setRequestHeader("X-Http-Method-Override", "PUT")
+ #$('#core_editor').bind 'input', ->
+ #  marked_word = $('[meaning]').map((_x, y)-> $(y).attr('meaning'))
+ #  $.ajax "/articles/#{gon.article_id}",
+ #    data: {sense: marked_word.get(), html: $('#core_editor').html() }
+ #    type: 'POST'
+ #    beforeSend: (xhr) ->
+ #      xhr.setRequestHeader("X-Http-Method-Override", "PUT")
 
   $('#core_editor').keyup (e) ->
     sel = window.getSelection()

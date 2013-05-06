@@ -1,10 +1,11 @@
 <div ng-controller='editor'>
   <div id='door' class="row" >
     <div class="span8">
-      <div core id="core_editor" contenteditable=true >
+      <div core id="core_editor" ng-model = "content" contenteditable=true >
         <%= raw @article.html %>
         {{content}}
       </div>
+      {{content}}
 
       <div id="shower" contenteditable=true></div>
     </div>
@@ -14,4 +15,5 @@
     <div class="span2" id="boxes">
     </div>
   </div>
+      {{content}}
 </div>
