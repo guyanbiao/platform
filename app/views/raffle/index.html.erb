@@ -1,13 +1,15 @@
-<div ng-controller='editor'>
+<div>
   <div id='door' class="row" >
     <div class="span8">
       <div core id="core_editor" ng-model = "content" contenteditable=true >
-        <%= raw @article.html %>
-        {{content}}
       </div>
-      {{content}}
 
-      <div id="shower" contenteditable=true></div>
+      <button></button>
+
+      <div id="shower_wrapper">
+        <div origin id="shower" contenteditable=true>
+        </div>
+      </div>
     </div>
 
     <div class="span4" id="attr_pick">
@@ -15,5 +17,9 @@
     <div class="span2" id="boxes">
     </div>
   </div>
-      {{content}}
 </div>
+<script>
+  window.editor = ace.edit("shower")
+  window.editor.getSession().setMode("ace/mode/xml");
+  window.editor.setValue("");
+</script>

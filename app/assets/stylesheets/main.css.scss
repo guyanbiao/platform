@@ -11,6 +11,7 @@ body {
   margin-top: 5px;
   height: 300px;
   border-style: solid;
+  overflow: scroll;
 }
 
 input[type=radio] {
@@ -59,4 +60,7 @@ input[type=radio] {
   font-size: 25px;
   padding: 3px;
 
+}
+[tag_type=block] {
+  display: block;
 }
