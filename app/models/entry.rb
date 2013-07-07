@@ -1,3 +1,3 @@
-class Entry < ActiveRecord::Base
-  attr_accessible :name, :winner
+class Entry 
+  include Mongoid::Document
 end

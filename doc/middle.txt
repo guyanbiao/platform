@@ -110,7 +110,7 @@ bathroom
 be
 beach
 bean
-bear
+bear
 beat
 beautiful
 because
@@ -144,7 +144,7 @@ block
 blood
 blouse
 blow
-blue
+blue
 board
 boat
 body
@@ -781,6 +781,7 @@ mark
 market
 marry
 match
+math
 maths
 mathematics
 matter
@@ -821,6 +822,7 @@ mix
 mobile phone
 model
 modern
+mom
 Monday
 money
 monkey

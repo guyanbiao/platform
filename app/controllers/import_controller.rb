@@ -27,7 +27,8 @@ class ImportController < ApplicationController
   end
 
   def fuzzy
-    doc = Nokogiri::XML((params[:fuzzy][:file]).read)
+    file_content = (params[:fuzzy][:file]).read.encode!('UTF-8', 'UTF-8', :invalid => :replace)
+    doc = Nokogiri::XML(file_content)
     doc.xpath('lemmaList/entry').each do |entry|
       if entry.xpath('body/derivations').text.length > 0
         if !Fuzzy.where(:title => entry.xpath('head/title').text).first

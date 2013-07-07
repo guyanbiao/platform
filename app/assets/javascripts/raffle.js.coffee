@@ -1,4 +1,44 @@
 mydir = angular.module("myApp", [])
+mydir.controller("main", ($scope, $http) ->
+  $scope.findFirstAppear = ->
+    $.ajax '/query/high',
+      type: 'GET'
+      success: (data) ->
+        window.new_word_finder = data
+        $('w').each (_index, elem) ->
+          console.log $(elem).text()
+          if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1 and $(elem).text().search(/\w/) != -1
+            $(elem).addClass("first_appear")
+  $scope.down_transfer = ->
+    tidy_content = $('#core_editor').html().replace(/&nbsp;/g, " ")
+    editor.setValue(tidy_content)
+  $scope.up_transfer = ->
+    $('#core_editor').html(editor.getValue())
+  $scope.updateArticle = ->
+    alert 'updated'
+  $scope.addModule = ->
+    sel = window.getSelection()
+    range = sel.getRangeAt(0)
+    content = range.extractContents()
+
+    module_label = document.createElement('div')
+    module_label.setAttribute('class', 'module_name_wrapper')
+    real_label = document.createElement('div')
+    real_label.setAttribute('class', 'module_name label label-info')
+    real_label.appendChild(document.createTextNode('example'))
+    module_label.appendChild(real_label)
+
+    module_body = document.createElement('div')
+    module_body.setAttribute('class', 'module_body')
+    module_body.appendChild(content)
+
+    wrapper = document.createElement('div')
+    wrapper.setAttribute('class', 'module')
+    wrapper.appendChild(module_label)
+    wrapper.appendChild(module_body)
+    range.insertNode(wrapper)
+    range.collapse()
+ )
 ###
 mydir.directive("core", ->
   return {
@@ -87,20 +127,8 @@ $ ->
  #    beforeSend: (xhr) ->
  #      xhr.setRequestHeader("X-Http-Method-Override", "PUT")
 
-
-  $('#core_editor').bind 'blur', ->
-    editor.setValue($('#core_editor').html())
-
-  $('#core_editor').bind 'focus', ->
-    $('#core_editor').html(editor.getValue())
-
-  ###
-  $('#core_editor').keyup (e) ->
-    sel = window.getSelection()
-    node = sel.anchorNode
-    if node.nodeType == 3 and node.parentNode.nodeName != 'WORD' and node.textContent.match(/\w+/)
-      findAndReplaceDOMText(/\w+/, node, 'word')
-  ###
+  insert_after = (ref_node, new_node) ->
+    ref_node.parentNode.insertBefore(new_node, ref_node.nextSibling)
 
   $('#core_editor').keydown (e) ->
     console.log e
@@ -113,9 +141,11 @@ $ ->
     
     switch e.keyCode
       #backspace
+      when 17
+        console.log 'Press ctrl key'
       when 8
         if node.nodeType == 3
-          if node.length == 1 and node.parentNode.nodeName == "WORD"
+          if node.length == 1 and node.parentNode.nodeName == "W"
             sel.collapse(node, move_step - 1)
             node.parentNode.remove()
           else
@@ -125,17 +155,30 @@ $ ->
           console.log 'd'
       #space
       when 32 
-        if node.parentNode.nodeName != 'WORD' and node.textContent.match(/\w+/)
+        if node.parentNode.nodeName != 'W' and node.textContent.match(/\w+/)
           ran.insertNode(document.createTextNode('\u00A0'))
           sel.modify('move', 'right', 'character')
-          findAndReplaceDOMText(/\w+/, node, 'word')
-      else
-        if node.nodeType == 3# and node.parentNode.nodeName != 'WORD' and node.textContent.match(/\w+/)
-          #findAndReplaceDOMText(/\w+/, node, 'word')
-          node.nodeValue = node.nodeValue.substring(0, move_step) + keybind[e.keyCode] + node.nodeValue.substring(move_step, node.length)
-        else
-          ran.insertNode(document.createTextNode(keybind[e.keyCode]))
-        sel.collapse(node, move_step + 1)
+          findAndReplaceDOMText(/\w+/, node, 'w')
+        else if node.parentNode.nodeName == 'W'
+          if node.length > move_step
+            console.log 'middle'
+          else
+            console.log 'sb'
+            space_node = document.createTextNode('\u00A0')
+            insert_after node.parentNode, document.createTextNode('\u00A0')
+            sel.modify('move', 'right', 'character')
+
+      else 
+        if jQuery.inArray(e.keyCode.toString(), Object.keys(keybind)) != -1
+          to_be_insert = if e.shiftKey then String.fromCharCode(e.keyCode) else String.fromCharCode(e.keyCode).toLowerCase()
+          if node.nodeType == 3# and node.parentNode.nodeName != 'WORD' and node.textContent.match(/\w+/)
+            #findAndReplaceDOMText(/\w+/, node, 'word')
+            node.nodeValue = node.nodeValue.substring(0, move_step) +
+              to_be_insert + node.nodeValue.substring(move_step, node.length)
+          else
+            ran.insertNode(document.createTextNode(to_be_insert))
+            
+          sel.collapse(node, move_step + 1)
 
   ###
   $('#core_editor').keydown (e) ->
@@ -164,13 +207,11 @@ $ ->
       window.new_word_finder = data
       $('word').each (_index, elem) ->
         console.log $(elem).text()
-        if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1
+        if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1 and $(elem).text().search(/\w/) != -1
           $(elem).addClass("first_appear")
 
-  $('#core_editor').delegate 'word', 'dblclick', ->
+  $('#core_editor').delegate 'w', 'dblclick', ->
     $('.selected_word').removeClass('selected_word')
-    $(this).addClass('selected_word')
-    $('.slected_word').removeClass('selected_word')
     $(this).addClass('selected_word')
     $('#attr_pick').html('')
     word = $(this).text()

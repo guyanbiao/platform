@@ -638,6 +638,9 @@ chicken
 chief
 child
 childhood
+children
+China
+Chinese
 chocolate
 choice
 choir
@@ -1102,6 +1105,7 @@ electronic
 elegant
 elephant
 else
+email
 embarrass
 embassy
 emergency
@@ -1118,6 +1122,7 @@ energetic
 energy
 engine
 engineer
+English
 enjoy
 enjoyable
 enlarge
@@ -1239,6 +1244,7 @@ fee
 feed
 feel
 feeling
+feet
 fellow
 female
 fence
@@ -1407,6 +1413,7 @@ gold
 golden
 golf
 good
+goodbye
 goods
 goose
 govern
@@ -1877,6 +1884,7 @@ melon
 member
 memorial
 memory
+men
 mend
 mental
 mention
@@ -1915,6 +1923,9 @@ minus
 minute
 mirror
 miss
+Miss
+Mr
+Ms
 missile
 mist
 mistake
@@ -2146,6 +2157,7 @@ ox
 oxygen
 P.C.
 P.E.
+PE
 p.m.
 pace
 Pacific
@@ -3304,6 +3316,7 @@ upwards
 urban
 urge
 urgent
+us
 use
 used
 useful
@@ -3471,6 +3484,7 @@ without
 witness
 wolf
 woman
+women
 wonder
 wonderful
 wood

@@ -5,6 +5,7 @@ body {
   height: 300px;
   border-style: dotted;
   overflow: scroll;
+  margin-bottom: 5px;
 }
 
 #shower {
@@ -63,4 +64,64 @@ input[type=radio] {
 }
 [tag_type=block] {
   display: block;
+  margin-left: 20px
+}
+
+blank {
+  width: 30px;
+  border-bottom-style: solid;
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+
+capsule {
+  up {
+    overflow: hidden;
+    hint {
+      float: left;
+      border: 1px solid;
+      border-bottom: transparent;
+    }
+  }
+  down {
+    border: 1px solid;
+  }
+}
+
+.module_name {
+  float: left;
+}
+.module_body {
+  border: solid 1px #3a87ad
+}
+
+.module_name_wrapper {
+  overflow: hidden;
+}
+
+.module_name_wrapper {
+  overflow: hidden;
+}
+.module {
+  margin-left: 10px;
+}
+
+section_name {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+instructions {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+word_box {
+  margin: 3px;
+  padding: 3px;
+  border: 1px solid;
 }

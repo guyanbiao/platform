@@ -5,6 +5,10 @@ gem 'nokogiri'
 gem 'mongoid'
 gem 'devise'
 gem 'gon'
+gem 'pry'
+gem 'pry-rails'
+gem 'pry-remote'
+gem 'pry-nav'
 
 
 # Bundle edge Rails instead:
