@@ -2,6 +2,7 @@
   <div id='door' class="row" >
     <div class="span8">
       <div id="core_editor" contenteditable=true >
+        <%= raw @article.html %>
       </div>
 
       <div class="row">
@@ -11,8 +12,9 @@
         </div>
         <div class="span6" style="text-align: right">
           <button class="btn btn-info" ng-click="addModule()">Save</button>
-          <button class="btn btn-success" ng-click="updateArticle()">Save</button>
-          <button class="btn btn-alert"ng-click="findFirstAppear()">show strange word</button>
+          <button class="btn btn-success" ng-click="updateArticle()">保存更改</button>
+          <button class="btn btn-alert" ng-click="hideExceedWord()">隐藏超纲词</button>
+          <button class="btn btn-alert" ng-click="findFirstAppear()">显示超纲词</button>
         </div>
       </div>
 

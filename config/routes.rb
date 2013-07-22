@@ -6,6 +6,7 @@
   resources :articles
   get 'query' => 'query#index'
   get 'query/:level' => 'query#check'
+  get 'new_words'    => 'query#before_this'
   get 'raffle' => 'raffle#index', :as => 'raffle'
   get 'import' => 'import#index'
   namespace :import do

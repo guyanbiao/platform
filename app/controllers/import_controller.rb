@@ -40,6 +40,7 @@ class ImportController < ApplicationController
         end
       end
     end
+    render text: 'success'
   end
 
   protected

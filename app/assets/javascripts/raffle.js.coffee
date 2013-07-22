@@ -1,13 +1,11 @@
 mydir = angular.module("myApp", [])
 mydir.controller("main", ($scope, $http) ->
+  $scope.hideExceedWord = ->
+    $('.first_appear').removeClass('first_appear')
   $scope.findFirstAppear = ->
-    $.ajax '/query/high',
-      type: 'GET'
-      success: (data) ->
-        window.new_word_finder = data
         $('w').each (_index, elem) ->
           console.log $(elem).text()
-          if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1 and $(elem).text().search(/\w/) != -1
+          if $.inArray($(elem).text(), window.new_word_finder) == -1 and $.inArray($(elem).text().toLowerCase(), window.new_word_finder) == -1 and $(elem).text().search(/^[A-Za-z\-]+$/) != -1
             $(elem).addClass("first_appear")
   $scope.down_transfer = ->
     tidy_content = $('#core_editor').html().replace(/&nbsp;/g, " ")
@@ -15,7 +13,14 @@ mydir.controller("main", ($scope, $http) ->
   $scope.up_transfer = ->
     $('#core_editor').html(editor.getValue())
   $scope.updateArticle = ->
-    alert 'updated'
+    marked = $('.new_comer').map((_a, b) -> $(b).attr('meaning'))
+    $.ajax "/articles/#{gon.article_id}",
+      type: 'POST'
+      data: { html: $('#core_editor').html(), new_comer: marked.get() }
+      dataType: 'json'
+      beforeSend: (xhr) ->
+        xhr.setRequestHeader("X-Http-Method-Override", "PUT")
+      success: alert 'updated'
   $scope.addModule = ->
     sel = window.getSelection()
     range = sel.getRangeAt(0)
@@ -205,10 +210,6 @@ $ ->
     type: 'GET'
     success: (data) ->
       window.new_word_finder = data
-      $('word').each (_index, elem) ->
-        console.log $(elem).text()
-        if $.inArray($(elem).text(), data) == -1 and $.inArray($(elem).text().toLowerCase(), data) == -1 and $(elem).text().search(/\w/) != -1
-          $(elem).addClass("first_appear")
 
   $('#core_editor').delegate 'w', 'dblclick', ->
     $('.selected_word').removeClass('selected_word')
@@ -233,12 +234,20 @@ $ ->
 
         $('#boxes').html('')
         if $('.selected_word').hasClass('new_comer')
-          $('#boxes').append('<div>new word <input name="stranger" type="checkbox" checked></div>')
+          $('#boxes').append('<div>生词<input name="stranger" type="checkbox" checked></div>')
         else
-          $('#boxes').append('<div>new word <input name="stranger" type="checkbox"></div>')
-
+          $('#boxes').append('<div>生词<input name="stranger" type="checkbox"></div>')
         $('input[name=stranger]').bind 'change', ->
           $('.selected_word').toggleClass('new_comer')
+
+        if $('.selected_word').hasClass('proper_noun')
+          $('#boxes').append('<div>人名<input name="proper_noun" type="checkbox" checked></div>')
+        else
+          $('#boxes').append('<div>人名<input name="proper_noun" type="checkbox"></div>')
+        $('input[name=person_name]').bind 'change', ->
+          $('.selected_word').toggleClass('proper_noun')
+          $('.selected_word').removeClass('first_appear')
+
 
         $('input[name=radio_list]').bind 'change', ->
           $.ajax "/articles/#{gon.article_id}",
