@@ -34,6 +34,12 @@ input[type=radio] {
   white-space: nowrap;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
+
+.exceed_word {
+  @include main_marker;
+  background-color: #b94a48;
+}
+
 .first_appear {
   @include main_marker;
   background-color: #f89406;
@@ -124,4 +130,13 @@ word_box {
   margin: 3px;
   padding: 3px;
   border: 1px solid;
+}
+
+.left {
+  float: left;
+}
+
+.word_body {
+  width: 100px;
+  font-weight: bold;
 }

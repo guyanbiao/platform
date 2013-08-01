@@ -1,4 +1,9 @@
 class QueryController < ApplicationController
+  def marked_words
+    article = Article.find params[:article_id]
+    m = article.marked_words.map  {|x| {word: x.word, meaning: x.sense.description }}
+    render json: m
+  end
   def index
     words = Dictionary.fuzzy_find params[:word]
     result = words.map { |word| { :origin => (Fuzzy.any_in(:derivations => [params[:word]]).first.try(:title) || params[:word]),
@@ -19,7 +24,8 @@ class QueryController < ApplicationController
 
     result = []
     if tg > 9
-      base = Filter.find_by(:level => 'high').full_members
+      middle = Filter.find_by(:level => 'middle').full_members
+      base =  Filter.find_by(:level => 'high').full_members - middle
       ((9+1)..tg).each do |gr|
         (1..tu).each do |un|
           (1..tl).each do |le|
@@ -30,6 +36,6 @@ class QueryController < ApplicationController
       end
     end
 
-    render json: result
+    render json: base - result
   end
 end

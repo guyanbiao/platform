@@ -8,13 +8,15 @@
       <div class="row">
         <div class="span2">
           <button ng-click="down_transfer()">&#8595;</button>
-          <button ng-click="up_transfer()">&#8593;</button>
+        <button ng-click="up_transfer()">&#8593;</button>
         </div>
         <div class="span6" style="text-align: right">
           <button class="btn btn-info" ng-click="addModule()">Save</button>
           <button class="btn btn-success" ng-click="updateArticle()">保存更改</button>
-          <button class="btn btn-alert" ng-click="hideExceedWord()">隐藏超纲词</button>
-          <button class="btn btn-alert" ng-click="findFirstAppear()">显示超纲词</button>
+          <button class="btn btn-alert" ng-click="findExceedWord()">
+            {{first_appear_switch && '隐藏超纲词' || '显示超纲词' }}
+          </button>
+          <button class="btn btn-alert" ng-click="findFirstAppear()">{{first_appear_switch && '隐藏生词' || '显示生词' }}</button>
         </div>
       </div>
 
@@ -24,9 +26,19 @@
       </div>
     </div>
 
-    <div class="span4" id="attr_pick">
+    <div class="span4">
+      <div>
+        <div class='btn btn-small btn-danger'>取消词义标注</div>
+        <div id="attr_pick"></div>
+      </div>
+      <h3>本课生词: </h3>
+      <div ng-repeat="word in marked_words">
+        <div class="left word_body">{{word.word}}</div> <div class="">{{word.meaning}}</div>
+      </div>
     </div>
     <div class="span2" id="boxes">
+      <div>生词<input ng-model="new_comer" type="checkbox" ng-click="setWordProperty('new_comer')"></div>
+      <div>人名<input ng-model="proper_noun" type="checkbox" ng-click="setWordProperty('proper_noun')"></div>
     </div>
   </div>
 </div>

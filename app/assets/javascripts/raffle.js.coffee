@@ -1,17 +1,52 @@
 mydir = angular.module("myApp", [])
 mydir.controller("main", ($scope, $http) ->
-  $scope.hideExceedWord = ->
-    $('.first_appear').removeClass('first_appear')
+
+  #prepare data
+  $http.get('/query/high').success (data) ->
+      window.new_word_finder = data
+
+  $http.post('/query/marked_words', {article_id: gon.article_id}).success (data) ->
+      $scope.marked_words = data
+
+  $http.post('/query/learnt_words.json', {article_id: gon.article_id}).success (data) ->
+      window.learnt_words = data
+
+  $scope.first_appear_switch = false
+  $scope.exceed_word_switch = false
+
+ # $scope.$watch('stranger', -> alert($scope.stranger))
+
+  $scope.setWordProperty = (type) ->
+    $('.selected_word').toggleClass(type)
   $scope.findFirstAppear = ->
-        $('w').each (_index, elem) ->
-          console.log $(elem).text()
-          if $.inArray($(elem).text(), window.new_word_finder) == -1 and $.inArray($(elem).text().toLowerCase(), window.new_word_finder) == -1 and $(elem).text().search(/^[A-Za-z\-]+$/) != -1
-            $(elem).addClass("first_appear")
+    if $scope.first_appear_switch
+      $('.first_appear').removeClass('first_appear')
+    else
+      $('w').each (_index, elem) ->
+        if $.inArray($(elem).text(), window.learnt_words) != -1 or $.inArray($(elem).text().toLowerCase(), window.learnt_words) != -1 
+          $(elem).addClass("first_appear")
+          
+    $scope.first_appear_switch = !$scope.first_appear_switch
+
+  $scope.findExceedWord = ->
+    if $scope.exceed_word_switch
+      $('.exceed_word').removeClass('exceed_word')
+    else
+      $('w').each (_index, elem) ->
+        console.log $(elem).text()
+        if $.inArray($(elem).text(), window.new_word_finder) == -1 and $.inArray($(elem).text().toLowerCase(), window.new_word_finder) == -1 and $(elem).text().search(/^[A-Za-z\-]+$/) != -1
+          $(elem).addClass("exceed_word")
+    $scope.first_appear_switch = !$scope.first_appear_switch
+
+
+
   $scope.down_transfer = ->
     tidy_content = $('#core_editor').html().replace(/&nbsp;/g, " ")
     editor.setValue(tidy_content)
+
   $scope.up_transfer = ->
     $('#core_editor').html(editor.getValue())
+
   $scope.updateArticle = ->
     marked = $('.new_comer').map((_a, b) -> $(b).attr('meaning'))
     $.ajax "/articles/#{gon.article_id}",
@@ -206,15 +241,20 @@ $ ->
   ###
     
 
-  $.ajax '/query/high',
-    type: 'GET'
-    success: (data) ->
-      window.new_word_finder = data
+
 
   $('#core_editor').delegate 'w', 'dblclick', ->
     $('.selected_word').removeClass('selected_word')
     $(this).addClass('selected_word')
+
     $('#attr_pick').html('')
+
+    self = this
+    ['new_comer', 'proper_noun'].forEach (type) ->
+        has_cla = $(self).hasClass(type)
+        scope = angular.element($('[ng-controller="main"]')).scope()
+        scope.$apply -> scope[type] = has_cla
+
     word = $(this).text()
     $.ajax 'query',
       type: 'GET'
@@ -232,35 +272,15 @@ $ ->
               else
                 $('#attr_pick').append("<div><input type='radio' value=#{juggle} name='radio_list'> #{ss_elem.description}</div>")
 
-        $('#boxes').html('')
-        if $('.selected_word').hasClass('new_comer')
-          $('#boxes').append('<div>生词<input name="stranger" type="checkbox" checked></div>')
-        else
-          $('#boxes').append('<div>生词<input name="stranger" type="checkbox"></div>')
-        $('input[name=stranger]').bind 'change', ->
-          $('.selected_word').toggleClass('new_comer')
-
-        if $('.selected_word').hasClass('proper_noun')
-          $('#boxes').append('<div>人名<input name="proper_noun" type="checkbox" checked></div>')
-        else
-          $('#boxes').append('<div>人名<input name="proper_noun" type="checkbox"></div>')
-        $('input[name=person_name]').bind 'change', ->
-          $('.selected_word').toggleClass('proper_noun')
-          $('.selected_word').removeClass('first_appear')
 
 
-        $('input[name=radio_list]').bind 'change', ->
-          $.ajax "/articles/#{gon.article_id}",
-            type: 'POST'
-            data: { html: $('#core_editor').html() }
-            dataType: 'json'
-            beforeSend: (xhr) ->
-              xhr.setRequestHeader("X-Http-Method-Override", "PUT")
-
-          value = $('input[name=radio_list]:checked').val()
-          $('.selected_word').removeClass('first_appear')
-          $('.selected_word').addClass('marked')
-          $('.selected_word').attr('meaning', value )
+   #      $('.selected_word').toggleClass('proper_noun')
+   #       $('.selected_word').removeClass('first_appear')
+   #       value = $('input[name=radio_list]:checked').val()
+   #        $('.selected_word').removeClass('first_appear')
+   #       $('.selected_word').addClass('marked')
+   #       $('.selected_word').attr('meaning', value )
+          
 
 
         
