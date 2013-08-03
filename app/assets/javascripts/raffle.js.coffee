@@ -275,12 +275,11 @@ $ ->
 
 
 
-   #      $('.selected_word').toggleClass('proper_noun')
-   #       $('.selected_word').removeClass('first_appear')
-   #       value = $('input[name=radio_list]:checked').val()
-   #        $('.selected_word').removeClass('first_appear')
-   #       $('.selected_word').addClass('marked')
-   #       $('.selected_word').attr('meaning', value )
+        $('input[name=radio_list]').change ->      
+          $('.selected_word').removeClass('first_appear')
+          value = $('input[name=radio_list]:checked').val()
+          $('.selected_word').addClass('marked')
+          $('.selected_word').attr('meaning', value )
           
 
 

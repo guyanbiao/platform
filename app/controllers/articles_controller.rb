@@ -22,7 +22,7 @@ class ArticlesController < ApplicationController
 
 
     params[:new_comer].each do |m|
-      sense = Sense.find m[1].meaning
+      sense = Sense.find m[1][:meaning]
       marked = MarkedWord.new
       marked.sense = sense
       marked.article = @article

@@ -4,6 +4,7 @@ class QueryController < ApplicationController
     m = article.marked_words.map  {|x| {word: x.word, meaning: x.sense.description }}
     render json: m
   end
+  
   def index
     words = Dictionary.fuzzy_find params[:word]
     result = words.map { |word| { :origin => (Fuzzy.any_in(:derivations => [params[:word]]).first.try(:title) || params[:word]),

@@ -3,6 +3,7 @@ class Dictionary
   field :word , :type => String
   #field :phonetic, :type => String
   has_many :categories
+  
   scope :fuzzy_find, ->(word) {
     if Dictionary.where(:word => word).first
       where(:word => word)
