@@ -20,8 +20,9 @@ class ArticlesController < ApplicationController
     @article.html = params[:html]
     @article.save
 
+
     params[:new_comer].each do |m|
-      sense = Sense.find m
+      sense = Sense.find m[1].meaning
       marked = MarkedWord.new
       marked.sense = sense
       marked.article = @article

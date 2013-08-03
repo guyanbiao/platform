@@ -48,14 +48,15 @@ mydir.controller("main", ($scope, $http) ->
     $('#core_editor').html(editor.getValue())
 
   $scope.updateArticle = ->
-    marked = $('.new_comer').map((_a, b) -> $(b).attr('meaning'))
+    marked = $('.new_comer').toArray().map((b) -> {word: $(b).text(), meaning: $(b).attr('meaning')})
     $.ajax "/articles/#{gon.article_id}",
       type: 'POST'
-      data: { html: $('#core_editor').html(), new_comer: marked.get() }
+      data: { html: $('#core_editor').html(), new_comer: marked }
       dataType: 'json'
       beforeSend: (xhr) ->
         xhr.setRequestHeader("X-Http-Method-Override", "PUT")
       success: alert 'updated'
+
   $scope.addModule = ->
     sel = window.getSelection()
     range = sel.getRangeAt(0)
