@@ -11,11 +11,14 @@ mydir.controller("main", ($scope, $http) ->
   $http.post('/query/learnt_words.json', {article_id: gon.article_id}).success (data) ->
       window.learnt_words = data
 
-  $scope.first_appear_switch = false
-  $scope.exceed_word_switch = false
+  $scope.first_appear_switch = $('.first_appear').length > 0 ? true : false
+  $scope.exceed_word_switch = $('.exceed_word').length > 0 ? true : false
 
  # $scope.$watch('stranger', -> alert($scope.stranger))
 
+  $scope.unMark = ->
+    $('.selected_word').removeAttr('meaning')
+    $('.selected_word').removeClass('marked')
   $scope.setWordProperty = (type) ->
     $('.selected_word').toggleClass(type)
   $scope.findFirstAppear = ->
@@ -36,7 +39,8 @@ mydir.controller("main", ($scope, $http) ->
         console.log $(elem).text()
         if $.inArray($(elem).text(), window.new_word_finder) == -1 and $.inArray($(elem).text().toLowerCase(), window.new_word_finder) == -1 and $(elem).text().search(/^[A-Za-z\-]+$/) != -1
           $(elem).addClass("exceed_word")
-    $scope.first_appear_switch = !$scope.first_appear_switch
+
+    $scope.exceed_word_switch = !$scope.exceed_word_switch
 
 
 

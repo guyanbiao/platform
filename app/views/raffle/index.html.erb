@@ -14,7 +14,7 @@
           <button class="btn btn-info" ng-click="addModule()">Save</button>
           <button class="btn btn-success" ng-click="updateArticle()">保存更改</button>
           <button class="btn btn-alert" ng-click="findExceedWord()">
-            {{first_appear_switch && '隐藏超纲词' || '显示超纲词' }}
+            {{exceed_word_switch && '隐藏超纲词' || '显示超纲词' }}
           </button>
           <button class="btn btn-alert" ng-click="findFirstAppear()">{{first_appear_switch && '隐藏生词' || '显示生词' }}</button>
         </div>
@@ -28,7 +28,7 @@
 
     <div class="span4">
       <div>
-        <div class='btn btn-small btn-danger'>取消词义标注</div>
+      <div class='btn btn-small btn-danger' ng-click="unMark()">取消词义标注</div>
         <div id="attr_pick"></div>
       </div>
       <h3>本课生词: </h3>

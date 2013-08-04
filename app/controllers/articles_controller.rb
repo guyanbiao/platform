@@ -20,15 +20,19 @@ class ArticlesController < ApplicationController
     @article.html = params[:html]
     @article.save
 
-
-    params[:new_comer].each do |m|
-      sense = Sense.find m[1][:meaning]
-      marked = MarkedWord.new
-      marked.sense = sense
-      marked.article = @article
-      marked.word = sense.category.dictionary.word
-      marked.save
+    @article.marked_words.delete_all
+    
+    if params[:new_comer] and params[:new_comer].length > 0
+      params[:new_comer].each do |m|
+        sense = Sense.find m[1][:meaning]
+        marked = MarkedWord.new
+        marked.sense = sense
+        marked.article = @article
+        marked.word = sense.category.dictionary.word
+        marked.save
+      end
     end
+
     render json: {result: 'ok'}
   end
 end
