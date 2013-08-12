@@ -8,6 +8,7 @@
   get 'query/:level' => 'query#check'
   post 'query/learnt_words'    => 'query#before_this'
   post 'query/marked_words'  
+  post 'query/add_marked_word'  
   get 'raffle' => 'raffle#index', :as => 'raffle'
   get 'import' => 'import#index'
   namespace :import do

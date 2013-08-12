@@ -36,14 +36,16 @@
         <div class="left word_body">{{word.word}}</div> <div class="">{{word.meaning}}</div>
       </div>
     </div>
+
     <div class="span2" id="boxes">
       <div>生词<input ng-model="new_comer" type="checkbox" ng-click="setWordProperty('new_comer')"></div>
       <div>人名<input ng-model="proper_noun" type="checkbox" ng-click="setWordProperty('proper_noun')"></div>
     </div>
   </div>
 </div>
+
 <script>
   window.editor = ace.edit("shower")
   window.editor.getSession().setMode("ace/mode/xml");
-  window.editor.setValue("");
+  //window.editor.setValue("");
 </script>

@@ -1,7 +1,22 @@
 class QueryController < ApplicationController
+
+  def add_marked_word
+    article = Article.find params[:article_id]
+    if article.marked_words.map(&:sense_id).include? params[:sense_id]
+      render josn: {result: 'fail', reason: 'duplicated'}
+    else
+      sense = Sense.find params[:sense_id]
+      word = sense.category.dictionary.word
+      meaning = sense.description
+      render json: {word: word, meaning: meaning, sense_id: sense.id}
+    end
+  end
+
   def marked_words
     article = Article.find params[:article_id]
-    m = article.marked_words.map  {|x| {word: x.word, meaning: x.sense.description }}
+    m = article.marked_words.map  {|x| {word: x.word,
+     meaning: x.sense.description,
+     send_id: x.sense.id }}
     render json: m
   end
   

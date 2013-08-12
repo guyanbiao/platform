@@ -20,6 +20,20 @@ mydir.controller("main", ($scope, $http) ->
     $('.selected_word').removeAttr('meaning')
     $('.selected_word').removeClass('marked')
   $scope.setWordProperty = (type) ->
+    if $scope.new_comer
+      if $('.selected_word').attr('meaning')
+        $http.post('/query/add_marked_word', {
+          article_id: gon.article_id
+          sense_id: $('.selected_word').attr('meaning')
+          }).success (data) -> $scope.marked_words.push data
+      else
+        alert 'pick up a meaning'
+    else
+      for i in [0..($scope.marked_words.length - 1)] by 1
+        if $scope.marked_words[i].sense_id == $('.selected_word').attr('meaning')
+          $scope.marked_words.splice(i, 1)
+
+
     $('.selected_word').toggleClass(type)
   $scope.findFirstAppear = ->
     if $scope.first_appear_switch
